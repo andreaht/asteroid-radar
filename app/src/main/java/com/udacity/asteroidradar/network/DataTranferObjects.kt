@@ -2,7 +2,7 @@ package com.udacity.asteroidradar.network
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
-import com.udacity.asteroidradar.database.DatabasePictureOfTheDay
+import com.udacity.asteroidradar.database.DatabasePictureOfDay
 import com.udacity.asteroidradar.domain.PictureOfDay
 
 /**
@@ -11,44 +11,26 @@ import com.udacity.asteroidradar.domain.PictureOfDay
  * using them.
  */
 
-/**
- * VideoHolder holds a list of Videos.
- *
- * This is to parse first level of our network result which looks like
- *
- * {
- *   "videos": []
- * }
- */
-@JsonClass(generateAdapter = true)
-data class NetworkPictureOfDayContainer(val pic: NetworkPictureOfTheDay)
 
 /**
  * Videos represent a devbyte that can be played.
  */
 @JsonClass(generateAdapter = true)
-data class NetworkPictureOfTheDay(
+data class NetworkPictureOfDay(
     val url : String,
+    val date : String,
     @Json(name = "media_type") val mediaType : String,
     val title : String)
+
 
 /**
  * Convert Network results to database objects
  */
-fun NetworkPictureOfDayContainer.asDomainModel(): PictureOfDay {
-
-    return PictureOfDay(
-        pic.url,
-        pic.mediaType,
-        pic.title
+fun NetworkPictureOfDay.asDatabaseModel(): DatabasePictureOfDay {
+    return DatabasePictureOfDay(
+        url,
+        date,
+        mediaType,
+        title
     )
-}
-
-fun NetworkPictureOfDayContainer.asDatabaseModel(): DatabasePictureOfTheDay {
-    return DatabasePictureOfTheDay(
-        pic.url,
-        pic.mediaType,
-        pic.title
-    )
-
 }

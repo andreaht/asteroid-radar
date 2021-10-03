@@ -27,11 +27,11 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      */
     init {
         viewModelScope.launch {
-            picturesOfDayRepository.refreshPictures()
+            picturesOfDayRepository.refreshPictureOfDay()
         }
     }
 
-    val picOfDay = picturesOfDayRepository.picture
+    val picOfDay = picturesOfDayRepository.pictureOfDay
 
     /**
      * Factory for constructing MainViewModel with parameter

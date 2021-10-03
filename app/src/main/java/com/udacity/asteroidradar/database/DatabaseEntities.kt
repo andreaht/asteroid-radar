@@ -5,12 +5,13 @@ import androidx.room.PrimaryKey
 import com.udacity.asteroidradar.domain.PictureOfDay
 
 @Entity
-data class DatabasePictureOfTheDay constructor(
+data class DatabasePictureOfDay constructor(
     @PrimaryKey
     val url : String,
+    val date: String,
     val mediaType : String,
     val title : String)
 
-fun DatabasePictureOfTheDay.asDomainModel(): PictureOfDay {
+fun DatabasePictureOfDay.asDomainModel(): PictureOfDay {
     return PictureOfDay(url, mediaType, title)
 }

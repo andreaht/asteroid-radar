@@ -24,7 +24,7 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
         val database = getDatabase(applicationContext)
         val repository = PicturesOfDayRepository(database)
         return try {
-            repository.refreshPictures()
+            repository.refreshPictureOfDay()
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

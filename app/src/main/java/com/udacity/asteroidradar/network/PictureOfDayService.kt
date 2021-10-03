@@ -8,6 +8,7 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 // Since we only have one service, this can all go in one file.
 // If you add more services, split this to multiple files and make sure to share the retrofit
@@ -36,14 +37,14 @@ private val retrofit = Retrofit.Builder()
  * A retrofit service to fetch the picture of the day.
  */
 interface PicturesOfDayService {
-    @GET("planetary/apod?api_key=2KwC8WgKxF5p3LOhuhYqRuNLZMPKEsnpuawtxf8d")
-    fun getPictureOfDay(): Deferred<NetworkPictureOfDayContainer>
+    @GET(value = "planetary/apod")
+    fun getPictureOfDay(@Query("api_key") apiKey: String): Deferred<NetworkPictureOfDay>
 }
 
 /**
- * Main entry point for network access. Call like `Network.devbytes.getPlaylist()`
+ * Main entry point for network access. Call like `Network.picturesOfDay.getPictureOfDay()`
  */
-object PictureOfDayApi {
+object Network {
 
     val picturesOfDay = retrofit.create(PicturesOfDayService::class.java)
 }
