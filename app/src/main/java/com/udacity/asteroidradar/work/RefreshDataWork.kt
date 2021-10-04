@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.udacity.asteroidradar.database.getDatabase
+import com.udacity.asteroidradar.repository.AsteroidsRepository
 import com.udacity.asteroidradar.repository.PicturesOfDayRepository
 import retrofit2.HttpException
 
@@ -22,9 +23,11 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters):
      */
     override suspend fun doWork(): Result {
         val database = getDatabase(applicationContext)
-        val repository = PicturesOfDayRepository(database)
+        val pictureOfDayRepository = PicturesOfDayRepository(database)
+        val asteroidsRepository = AsteroidsRepository(database)
         return try {
-            repository.refreshPictureOfDay()
+            pictureOfDayRepository.refreshPictureOfDay()
+            asteroidsRepository.refreshAsteroids()
             Result.success()
         } catch (e: HttpException) {
             Result.retry()
