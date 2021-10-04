@@ -15,6 +15,7 @@ import retrofit2.http.Query
 // If you add more services, split this to multiple files and make sure to share the retrofit
 // object between services.
 
+enum class AsteroidApiFilter(val value: String) { SHOW_SAVED("saved"), SHOW_TODAY("today"), SHOW_WEEK("week") }
 
 /**
  * Build the Moshi object that Retrofit will be using, making sure to add the Kotlin adapter for

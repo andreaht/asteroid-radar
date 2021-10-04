@@ -4,8 +4,11 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.domain.PictureOfDay
+import com.udacity.asteroidradar.main.MainAdapter
 
 @BindingAdapter("statusIcon")
 fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
@@ -58,4 +61,12 @@ fun goneIfNotNull(view: View, it: Any?) {
 fun setImageUrl(imageView: ImageView, pic: PictureOfDay?) {
     if (pic != null)
         Picasso.get().load(pic.url).into(imageView)
+}
+/**
+ * When there is no Asteroids data (data is null), hide the [RecyclerView], otherwise show it.
+ */
+@BindingAdapter("listData")
+fun bindRecyclerView(recyclerView: RecyclerView, data: List<Asteroid>?) {
+    val adapter = recyclerView.adapter as MainAdapter
+    adapter.submitList(data)
 }

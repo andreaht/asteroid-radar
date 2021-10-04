@@ -8,10 +8,6 @@
         <variable
             name="asteroid"
             type="com.udacity.asteroidradar.domain.Asteroid" />
-
-        <variable
-            name="asteroidCallback"
-            type="com.udacity.asteroidradar.main.AsteroidClick" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -21,8 +17,7 @@
         android:layout_marginBottom="16dp"
         app:cardBackgroundColor="@color/app_background"
         app:cardCornerRadius="0dp"
-        app:cardElevation="5dp"
-        android:onClick="@{() -> asteroidCallback.onClick(asteroid)}">
+        app:cardElevation="5dp">
 
         <LinearLayout
             android:layout_width="match_parent"

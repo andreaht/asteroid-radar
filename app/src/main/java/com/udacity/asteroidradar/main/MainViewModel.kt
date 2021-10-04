@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.database.getDatabase
 import com.udacity.asteroidradar.domain.Asteroid
+import com.udacity.asteroidradar.network.AsteroidApiFilter
 import com.udacity.asteroidradar.repository.AsteroidsRepository
 import com.udacity.asteroidradar.repository.PicturesOfDayRepository
 import kotlinx.coroutines.launch
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
  */
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val database = getDatabase(application)
+    private val filter = MutableLiveData(AsteroidApiFilter.SHOW_SAVED)
     private val picturesOfDayRepository = PicturesOfDayRepository(database)
     private val asteroidsRepository = AsteroidsRepository(database)
     /**
@@ -33,7 +35,13 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     val picOfDay = picturesOfDayRepository.pictureOfDay
-    val asteroids = asteroidsRepository.asteroids
+    val asteroids = Transformations.switchMap(filter){
+        when (it) {
+            AsteroidApiFilter.SHOW_TODAY -> asteroidsRepository.asteroidsToday
+            AsteroidApiFilter.SHOW_WEEK -> asteroidsRepository.asteroidsWeek
+            else -> asteroidsRepository.asteroidsSaved
+        }
+    }
 
     /**
      * Factory for constructing MainViewModel with parameter
@@ -68,6 +76,15 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
      */
     fun displayAsteroidDetailsComplete() {
         _navigateToSelectedAsteroid.value = null
+    }
+
+    /**
+     * Updates the data set filter for the web services by querying the data with the new filter
+     * by calling [getAsteroids]
+     * @param filter the [AsteroidApiFilter] that is sent as part of the web server request
+     */
+    fun updateFilter(filter: AsteroidApiFilter) {
+        this.filter.value = filter
     }
 
 }
