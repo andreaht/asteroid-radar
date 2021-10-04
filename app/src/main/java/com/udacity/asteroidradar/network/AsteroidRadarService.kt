@@ -7,6 +7,7 @@ import com.udacity.asteroidradar.Constants.BASE_URL
 import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
@@ -29,6 +30,7 @@ private val moshi = Moshi.Builder()
  */
 private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
+    .addConverterFactory(ScalarsConverterFactory.create())
     .addConverterFactory(MoshiConverterFactory.create(moshi))
     .addCallAdapterFactory(CoroutineCallAdapterFactory())
     .build()
@@ -36,9 +38,12 @@ private val retrofit = Retrofit.Builder()
 /**
  * A retrofit service to fetch the picture of the day.
  */
-interface PicturesOfDayService {
+interface AsteroidRadarService {
     @GET(value = "planetary/apod")
     fun getPictureOfDay(@Query("api_key") apiKey: String): Deferred<NetworkPictureOfDay>
+
+    @GET(value = "neo/rest/v1/feed")
+    fun getAsteroids(@Query("api_key") apiKey: String) : Deferred<String>
 }
 
 /**
@@ -46,5 +51,5 @@ interface PicturesOfDayService {
  */
 object Network {
 
-    val picturesOfDay = retrofit.create(PicturesOfDayService::class.java)
+    val radarApi = retrofit.create(AsteroidRadarService::class.java)
 }

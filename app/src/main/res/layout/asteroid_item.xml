@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="asteroid"
+            type="com.udacity.asteroidradar.domain.Asteroid" />
+
+        <variable
+            name="asteroidCallback"
+            type="com.udacity.asteroidradar.main.AsteroidClick" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/app_background"
+        app:cardCornerRadius="0dp"
+        app:cardElevation="5dp"
+        android:onClick="@{() -> asteroidCallback.onClick(asteroid)}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:background="@color/app_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/app_background"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/app_background"
+                    android:text="@{asteroid.codename}"
+                    android:textColor="@color/default_text_color" />
+
+                <TextView
+                    android:id="@+id/absolute_magnitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:background="@color/app_background"
+                    android:text="@{asteroid.closeApproachDate}"
+                    android:textColor="@color/default_text_color" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/help_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/app_background"
+                android:padding="16dp"
+                app:statusIcon="@{asteroid.isPotentiallyHazardous}" />
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

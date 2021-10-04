@@ -11,7 +11,6 @@ import com.udacity.asteroidradar.network.asDatabaseModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
-import java.util.*
 
 class PicturesOfDayRepository(private val database: NasaDatabase) {
     /**
@@ -23,13 +22,13 @@ class PicturesOfDayRepository(private val database: NasaDatabase) {
         }
 
     /**
-     * Refresh the videos stored in the offline cache.
+     * Refresh the pics stored in the offline cache.
      *
      * This function uses the IO dispatcher to ensure the database insert database operation
      * happens on the IO dispatcher. By switching to the IO dispatcher using `withContext` this
      * function is now safe to call from any thread including the Main thread.
      *
-     * To actually load the videos for use, observe [videos]
+     * To actually load the pics for use, observe [pictureOfDay]
      */
     suspend fun refreshPictureOfDay() {
         withContext(Dispatchers.IO) {
@@ -37,7 +36,7 @@ class PicturesOfDayRepository(private val database: NasaDatabase) {
             // crash when attempting to load without a network connection
             try {
                 val pictureOfDay =
-                    Network.picturesOfDay.getPictureOfDay(Constants.API_KEY).await()
+                    Network.radarApi.getPictureOfDay(Constants.API_KEY).await()
                 database.pictureOfDayDao.insertPictureOfDay(pictureOfDay.asDatabaseModel())
             } catch (e: Exception) {
                 Timber.e(e)
